@@ -235,8 +235,23 @@ void insertNode(List *sortedList, const int val) {
 */
 
 List *joinLists(List *list1, List *list2) {
-    // TODO
-    return nullptr; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    List* new_list = new List;
+    if (list1->first == nullptr && list2->first == nullptr){
+        new_list->first = nullptr;
+    } else if (list1->first == nullptr){
+        new_list->first = list2->first;
+    } else if (list2->first == nullptr){
+        new_list->first = list1->first;
+    } else{
+        new_list->first = list1->first;
+        Node* temp = list1->first;
+        while(temp->next != nullptr){
+            temp = temp->next;
+        }
+        temp->next = list2->first;
+    }
+
+    return new_list; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -264,12 +279,27 @@ List *joinLists(List *list1, List *list2) {
 */
 
 void removeLastNode(List *list) {
-    // TODO
-    if(list->first == nullptr){
+    if (list->first == nullptr){
         return;
     }
 
-    
+    Node* temp = list->first;
+
+    if (temp->next == nullptr){
+        delete temp;
+        list->first = nullptr;
+        return;
+    }
+
+    Node* prev;
+
+    while (temp->next != nullptr){
+        prev = temp;
+        temp = temp->next;
+    }
+
+    delete temp;
+    prev->next = nullptr;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -452,23 +482,29 @@ Node *findLastNodeOccurrence(const List *list, const int val) {
 
 int main() {
 
-    ListData *list_data = new ListData;
-    int data[7] = {-9,412,64,72,100,100,6};
-    list_data->len = 4;
-    list_data->data = data;
+    List* list = new List;
+    Node* prvy_uzol = new Node;
+    Node* druhy_uzol = new Node;
+    Node* treti_uzol = new Node;
+    list->first = prvy_uzol;
+    prvy_uzol->data = 1;
+    prvy_uzol->next = druhy_uzol;
+    druhy_uzol->data = 2;
+    druhy_uzol->next = treti_uzol;
+    treti_uzol->data = 3;
 
-
-    List* list = createList(list_data);
 
     std::cout << list << std::endl;
 
-    Node* temp = list->first;
+    Node* temp3 = list->first;
 
-    while (temp) {
-        std::cout << temp->data << std::endl;
-        temp = temp->next;
+    while (temp3) {
+        std::cout << temp3->data << std::endl;
+        temp3 = temp3->next;
     }
 
-    delete list_data;
+    delete list;
+    delete prvy_uzol;
+    delete druhy_uzol;
     return 0;
 }
