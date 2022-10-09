@@ -152,7 +152,7 @@ List *createList(const ListData *listData) {
     }
 
     Node* temp = list->first;
-    for (int i = 1; i < listData->len; ++i) {
+    for (std::size_t i = 1; i < listData->len; ++i) {
         Node* new_node = new Node;
         temp->next = new_node;
         new_node->next = nullptr;
@@ -200,6 +200,43 @@ List *createList(const ListData *listData) {
 
 void insertNode(List *sortedList, const int val) {
     // TODO
+    Node* inserted_node = new Node;
+    inserted_node->data = val;
+
+    if (sortedList->first == nullptr){
+        sortedList->first = inserted_node;
+        return;
+    }
+
+    Node* temp = sortedList->first;
+
+    if (temp->next == nullptr){
+        if (temp->data < val){
+            temp->next = inserted_node;
+        } else{
+            sortedList->first = inserted_node;
+            inserted_node->next = temp;
+        }
+        return;
+    }
+
+    if (val < temp->data){
+        sortedList->first = inserted_node;
+        inserted_node->next = temp;
+    } else{
+        Node* prev = temp;
+        temp = temp->next;
+        while (temp) {
+            if (val < temp->data) {
+                prev->next = inserted_node;
+                inserted_node->next = temp;
+                return;
+            }
+            prev = temp;
+            temp = temp->next;
+        }
+        prev->next = inserted_node;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -369,8 +406,15 @@ bool isPalindrome(const List *list) {
 */
 
 int sumNodes(const List *list, const size_t n) {
-    // TODO
-    return -1; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    int sum = 0;
+    Node* temp = list->first;
+
+    for (std::size_t i = 0; i < n; ++i) {
+        sum += temp->data;
+        temp = temp->next;
+    }
+
+    return sum; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -482,29 +526,53 @@ Node *findLastNodeOccurrence(const List *list, const int val) {
 
 int main() {
 
-    List* list = new List;
-    Node* prvy_uzol = new Node;
-    Node* druhy_uzol = new Node;
-    Node* treti_uzol = new Node;
-    list->first = prvy_uzol;
-    prvy_uzol->data = 1;
-    prvy_uzol->next = druhy_uzol;
-    druhy_uzol->data = 2;
-    druhy_uzol->next = treti_uzol;
-    treti_uzol->data = 3;
+//    List* list = new List;
+//    Node* prvy_uzol = new Node;
+//    Node* druhy_uzol = new Node;
+//    Node* treti_uzol = new Node;
+//    list->first = prvy_uzol;
+//    prvy_uzol->data = 1;
+//    prvy_uzol->next = druhy_uzol;
+//    druhy_uzol->data = 2;
+//    druhy_uzol->next = treti_uzol;
+//    treti_uzol->data = 3;
 
-
-    std::cout << list << std::endl;
-
-    Node* temp3 = list->first;
-
-    while (temp3) {
-        std::cout << temp3->data << std::endl;
-        temp3 = temp3->next;
-    }
-
-    delete list;
-    delete prvy_uzol;
-    delete druhy_uzol;
+//    int len = 6; // pocet nodov listu
+//    int data[6] = {5,5,14,82,82,100}; // hodnoty nodov !!! treba zmenit velkost pola podla toho, kolko nodov to ma
+//    List* list = new List;
+//
+//    Node* prvy_uzol = new Node;
+//    list->first = prvy_uzol;
+//    prvy_uzol->next = nullptr;
+//    prvy_uzol->data = data[0];
+//
+//    Node* temp = list->first;
+//    for (int i = 1; i < len; ++i) {
+//        Node* new_node = new Node;
+//        temp->next = new_node;
+//        new_node->next = nullptr;
+//        new_node->data = data[i];
+//        temp = new_node;
+//    }
+//
+//    temp = nullptr;
+//    delete temp;
+//
+//    const int val = 5;
+//
+//    insertNode(list, val);
+//
+//    std::cout << list << std::endl;
+//
+//    Node* temp3 = list->first;
+//
+//    while (temp3) {
+//        std::cout << temp3->data << std::endl;
+//        temp3 = temp3->next;
+//    }
+//
+//    delete list;
+//    delete prvy_uzol;
+//    delete druhy_uzol;
     return 0;
 }
