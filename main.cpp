@@ -199,7 +199,6 @@ List *createList(const ListData *listData) {
 */
 
 void insertNode(List *sortedList, const int val) {
-    // TODO
     Node* inserted_node = new Node;
     inserted_node->data = val;
 
@@ -483,8 +482,30 @@ bool contains(const List *list1, const List *list2) {
 */
 
 List *deepCopyList(const List *list) {
-    // TODO
-    return nullptr; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    List* copied_list = new List;
+    if (list->first == nullptr){
+        return copied_list;
+    }
+
+    Node* temp_oldlist = list->first;
+
+    Node* first_node = new Node;
+    first_node->data = temp_oldlist->data;
+    copied_list->first = first_node;
+
+    Node* prev_newlist = first_node;
+
+    temp_oldlist = temp_oldlist->next;
+
+    while(temp_oldlist){
+        Node* new_node = new Node;
+        new_node->data = temp_oldlist->data;
+        prev_newlist->next = new_node;
+        prev_newlist = new_node;
+        temp_oldlist = temp_oldlist->next;
+    }
+
+    return copied_list; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -514,8 +535,22 @@ List *deepCopyList(const List *list) {
 */
 
 Node *findLastNodeOccurrence(const List *list, const int val) {
-    // TODO
-    return nullptr; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
+    Node* last_occurrence = nullptr;
+
+    if (list->first == nullptr){
+        return last_occurrence;
+    }
+
+    Node* temp = list->first;
+
+    while (temp){
+        if (temp->data == val){
+            last_occurrence = temp;
+        }
+        temp = temp->next;
+    }
+
+    return last_occurrence; // tento riadok zmente podla zadania, je tu len kvoli kompilacii
 }
 
 //-------------------------------------------------------------------------------------------------
